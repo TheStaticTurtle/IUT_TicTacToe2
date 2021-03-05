@@ -82,6 +82,7 @@ public enum Colors {
 
 	@Override
 	public String toString() {
-		return code;
+		if(System.getenv("ENABLE_ANSI")!= null && System.getenv("ENABLE_ANSI").equals("1")) return code;
+		return "";
 	}
 }

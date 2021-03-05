@@ -1,4 +1,4 @@
-package fr.thestaticturtle.morpion2;
+package fr.thestaticturtle.iut.morpion2;
 
 import java.awt.*;
 import java.util.Scanner;
@@ -21,8 +21,14 @@ public class Player {
 		if(!s.matches("\\d,\\d")) {
 			System.out.println("Invalid input");
 			play();
+			return;
 		}
 		String[] split = s.split(",");
+		if(split.length != 2) {
+			System.out.println("Invalid input");
+			play();
+			return;
+		}
 		int y = Integer.parseInt(split[0]);
 		int x = Integer.parseInt(split[1]);
 		if(x>0 && x<4 && y>0 && y<4) {
@@ -31,10 +37,12 @@ public class Player {
 			} catch (Exception e) {
 				System.out.println("Invalid input ("+e.getMessage()+")");
 				play();
+				return;
 			}
 		} else {
 			System.out.println("Invalid input");
 			play();
+			return;
 		}
 	}
 }

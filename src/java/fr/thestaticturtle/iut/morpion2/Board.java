@@ -1,4 +1,4 @@
-package fr.thestaticturtle.morpion2;
+package fr.thestaticturtle.iut.morpion2;
 
 import fr.thestaticturtle.utils.Colors;
 
@@ -26,27 +26,51 @@ public class Board {
 		for(List<String> sublist : initializer) _board.add(new ArrayList<String>(sublist));
 	}
 
-	void display() {
+	private void display_ansi() {
 		System.out.print("\033[H\033[2J");
-		System.out.print(Colors.WHITE_BACKGROUND+"    T I C   T A C   T O E    "+Colors.RESET+"\n");
+		System.out.print(Colors.WHITE_BACKGROUND + "    T I C   T A C   T O E    " + Colors.RESET + "\n");
 		for (int y = 0; y < 15; y++) {
 			for (int x = 0; x < 29; x++) {
-				if(y==0 || y==14 || x==0 || x==28) System.out.print(Colors.BLACK_BACKGROUND+" ");
-				else if(x==1 || x==27) System.out.print(Colors.BLACK_BACKGROUND+" ");
-				else if((x==2 || x==26)) System.out.print(Colors.WHITE_BACKGROUND+" ");
-				else if((y==1 || y==13 || x==3 || x==25)) System.out.print(Colors.WHITE_BACKGROUND+" ");
-				else if(! ((x-1)%8>2 && (y-1)%4>0) ) System.out.print(Colors.WHITE_BACKGROUND+" ");
-				else if((x-1)%8>2 && (y-1)%4>0) {
+				if (y == 0 || y == 14 || x == 0 || x == 28) System.out.print(Colors.BLACK_BACKGROUND + " ");
+				else if (x == 1 || x == 27) System.out.print(Colors.BLACK_BACKGROUND + " ");
+				else if ((x == 2 || x == 26)) System.out.print(Colors.WHITE_BACKGROUND + " ");
+				else if ((y == 1 || y == 13 || x == 3 || x == 25)) System.out.print(Colors.WHITE_BACKGROUND + " ");
+				else if (!((x - 1) % 8 > 2 && (y - 1) % 4 > 0)) System.out.print(Colors.WHITE_BACKGROUND + " ");
+				else if ((x - 1) % 8 > 2 && (y - 1) % 4 > 0) {
 					System.out.print(Colors.BLUE_BACKGROUND);
-					String c = _board.get(((x-1)/8)).get(((y-1)/4));
-					if((x-1)%8==5 && (y-1)%4==2) System.out.print(Colors.BLACK+""+Colors.BLUE_BACKGROUND+ ((c==null)?" ":c) );
+					String c = _board.get(((x - 1) / 8)).get(((y - 1) / 4));
+					if ((x - 1) % 8 == 5 && (y - 1) % 4 == 2)
+						System.out.print(Colors.BLACK + "" + Colors.BLUE_BACKGROUND + ((c == null) ? " " : c));
 					else System.out.print(" ");
-				}
-				else  System.out.print(Colors.RESET+" ");
+				} else System.out.print(Colors.RESET + " ");
 			}
-			System.out.print(Colors.RESET+"\n");
+			System.out.print(Colors.RESET + "\n");
 		}
 	}
+	private void display_ascii() {
+		System.out.print("    T I C   T A C   T O E    \n");
+		for (int y = 0; y < 15; y++) {
+			for (int x = 0; x < 29; x++) {
+				if (y == 0 || y == 14 || x == 0 || x == 28) System.out.print("█");
+				else if (x == 1 || x == 27) System.out.print("█");
+				else if ((x == 2 || x == 26)) System.out.print("█");
+				else if ((y == 1 || y == 13 || x == 3 || x == 25)) System.out.print("#");
+				else if (!((x - 1) % 8 > 2 && (y - 1) % 4 > 0)) System.out.print("#");
+				else if ((x - 1) % 8 > 2 && (y - 1) % 4 > 0) {
+					String c = _board.get(((x - 1) / 8)).get(((y - 1) / 4));
+					if ((x - 1) % 8 == 5 && (y - 1) % 4 == 2)
+						System.out.print((c == null) ? " " : c);
+					else System.out.print(" ");
+				} else System.out.print(" ");
+			}
+			System.out.print("\n");
+		}
+	}
+	void display() {
+		if(System.getenv("ENABLE_ANSI")!= null && System.getenv("ENABLE_ANSI").equals("1")) display_ansi();
+		else display_ascii();
+	}
+
 
 	void placeAt(Point p, String who) throws IndexOutOfBoundsException,NoSuchFieldException,InvalidParameterException {
 		if(!who.equals("O") && !who.equals("X")) throw new NoSuchFieldException("Invalid player piece (Must be X or O)");
