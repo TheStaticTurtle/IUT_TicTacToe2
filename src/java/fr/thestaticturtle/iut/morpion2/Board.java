@@ -97,12 +97,21 @@ public class Board {
 
 	boolean placeAt(Point p, String who) throws NoSuchFieldException {
 		if(!who.equals("O") && !who.equals("X")) throw new NoSuchFieldException("Invalid player piece (Must be X or O)");
-		if(is_placement_valid(new Point(p.x-1,p.y-1))) {
-			_board.get(p.y-1).set(p.x-1, who);
+		if(is_placement_valid(p)) {
+			_board.get(p.y).set(p.x, who);
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	String eraseAt(Point p) {
+		if( _board.get(p.y).get(p.x) != null ) {
+			String was = _board.get(p.y).get(p.x);
+			_board.get(p.y).set(p.x, null);
+			return was;
+		}
+		return null;
 	}
 
 
@@ -114,8 +123,10 @@ public class Board {
 		}
 		if(_board.get(0).get(0) != null && _board.get(0).get(0).equals(_board.get(1).get(1)) && _board.get(0).get(0).equals(_board.get(2).get(2))) return _board.get(0).get(0);
 		if(_board.get(0).get(2) != null && _board.get(0).get(2).equals(_board.get(1).get(1)) && _board.get(0).get(2).equals(_board.get(2).get(2))) return _board.get(0).get(2);
+		if(empty_cells().size()==0) return "draw";
 		return null;
 	}
+
 	String getWinBanner() {
 		if(getWinner().equals("X")) {
 			return  Colors.BLUE + " ██████╗  ██████╗         ██╗  ██╗" +Colors.RESET + "\n" +
@@ -124,13 +135,20 @@ public class Board {
 					Colors.BLUE + "██║   ██║██║   ██║██╗      ██╔██╗ " +Colors.RESET + "\n" +
 					Colors.BLUE + "╚██████╔╝╚██████╔╝╚═╝     ██╔╝ ██╗" +Colors.RESET + "\n" +
 					Colors.BLUE + " ╚═════╝  ╚═════╝         ╚═╝  ╚═╝" + Colors.RESET;
-		} else {
+		} else if (getWinner().equals("O")) {
 			return  Colors.BLUE + " ██████╗  ██████╗          ██████╗ " + Colors.RESET + "\n" +
 					Colors.BLUE + "██╔════╝ ██╔════╝ ██╗     ██╔═══██╗" + Colors.RESET + "\n" +
 					Colors.BLUE + "██║  ███╗██║  ███╗╚═╝     ██║   ██║" + Colors.RESET + "\n" +
 					Colors.BLUE + "██║   ██║██║   ██║██╗     ██║   ██║" + Colors.RESET + "\n" +
 					Colors.BLUE + "╚██████╔╝╚██████╔╝╚═╝     ╚██████╔╝" + Colors.RESET + "\n" +
 					Colors.BLUE + " ╚═════╝  ╚═════╝          ╚═════╝ " + Colors.RESET;
+		} else {
+			return  Colors.BLUE + "██████╗ ██████╗  █████╗ ██╗    ██╗" + Colors.RESET + "\n" +
+					Colors.BLUE + "██╔══██╗██╔══██╗██╔══██╗██║    ██║" + Colors.RESET + "\n" +
+					Colors.BLUE + "██║  ██║██████╔╝███████║██║ █╗ ██║" + Colors.RESET + "\n" +
+					Colors.BLUE + "██║  ██║██╔══██╗██╔══██║██║███╗██║" + Colors.RESET + "\n" +
+					Colors.BLUE + "██████╔╝██║  ██║██║  ██║╚███╔███╔╝" + Colors.RESET + "\n" +
+					Colors.BLUE + "╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ " + Colors.RESET;
 		}
 	}
 

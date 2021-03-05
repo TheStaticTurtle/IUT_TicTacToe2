@@ -13,7 +13,7 @@ public class Player {
 		party = p;
 	}
 
-	void play() throws NoSuchFieldException {
+	void play() throws NoSuchFieldException, Exception {
 		Scanner in = new Scanner(System.in);
 
 		System.out.print("[Player "+piece+"] Where do you want to play (row,col): ");
@@ -32,7 +32,7 @@ public class Player {
 		}
 		int y = Integer.parseInt(split[0]);
 		int x = Integer.parseInt(split[1]);
-		if(! party.placeAt(new Point(x,y),piece)) {
+		if(! party.placeAt(new Point(x-1,y-1),piece)) {
 			System.out.println("Requested position is invalid");
 			play();
 		}
