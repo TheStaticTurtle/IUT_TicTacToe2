@@ -26,6 +26,11 @@ public class Board {
 		for(List<String> sublist : initializer) _board.add(new ArrayList<String>(sublist));
 	}
 
+	public Board(Board b) {
+		_board = new ArrayList<List<String>>();
+		for(List<String> sublist : b._board) _board.add(new ArrayList<String>(sublist));
+	}
+
 	private void display_ansi() {
 		System.out.print("\033[H\033[2J");
 		System.out.print(Colors.WHITE_BACKGROUND + "    T I C   T A C   T O E    " + Colors.RESET + "\n");
@@ -38,7 +43,7 @@ public class Board {
 				else if (!((x - 1) % 8 > 2 && (y - 1) % 4 > 0)) System.out.print(Colors.WHITE_BACKGROUND + " ");
 				else if ((x - 1) % 8 > 2 && (y - 1) % 4 > 0) {
 					System.out.print(Colors.BLUE_BACKGROUND);
-					String c = _board.get(((x - 1) / 8)).get(((y - 1) / 4));
+					String c = _board.get(((y - 1) / 4)).get( ((x - 1) / 8));
 					if ((x - 1) % 8 == 5 && (y - 1) % 4 == 2)
 						System.out.print(Colors.BLACK + "" + Colors.BLUE_BACKGROUND + ((c == null) ? " " : c));
 					else System.out.print(" ");
@@ -57,7 +62,7 @@ public class Board {
 				else if ((y == 1 || y == 13 || x == 3 || x == 25)) System.out.print("#");
 				else if (!((x - 1) % 8 > 2 && (y - 1) % 4 > 0)) System.out.print("#");
 				else if ((x - 1) % 8 > 2 && (y - 1) % 4 > 0) {
-					String c = _board.get(((x - 1) / 8)).get(((y - 1) / 4));
+					String c = _board.get(((y - 1) / 4)).get( ((x - 1) / 8));
 					if ((x - 1) % 8 == 5 && (y - 1) % 4 == 2)
 						System.out.print((c == null) ? " " : c);
 					else System.out.print(" ");
@@ -78,7 +83,6 @@ public class Board {
 				if(_board.get(y).get(x) == null) out.add(new Point(x,y));
 			}
 		}
-		System.out.println(out);
 		return out;
 	}
 
@@ -109,24 +113,24 @@ public class Board {
 			if(_board.get(i).get(0) != null && _board.get(i).get(0).equals(_board.get(i).get(1)) && _board.get(i).get(0).equals(_board.get(i).get(2))) return _board.get(i).get(0);
 		}
 		if(_board.get(0).get(0) != null && _board.get(0).get(0).equals(_board.get(1).get(1)) && _board.get(0).get(0).equals(_board.get(2).get(2))) return _board.get(0).get(0);
-		if(_board.get(0).get(2) != null && _board.get(0).get(2).equals(_board.get(1).get(1)) && _board.get(2).get(0).equals(_board.get(2).get(2))) return _board.get(0).get(2);
+		if(_board.get(0).get(2) != null && _board.get(0).get(2).equals(_board.get(1).get(1)) && _board.get(0).get(2).equals(_board.get(2).get(2))) return _board.get(0).get(2);
 		return null;
 	}
 	String getWinBanner() {
 		if(getWinner().equals("X")) {
-			return  Colors.BLUE + " ██████╗  ██████╗     ██╗  ██╗" +Colors.RESET + "\n" +
-					Colors.BLUE + "██╔════╝ ██╔════╝     ╚██╗██╔╝" +Colors.RESET + "\n" +
-					Colors.BLUE + "██║  ███╗██║  ███╗     ╚███╔╝ " +Colors.RESET + "\n" +
-					Colors.BLUE + "██║   ██║██║   ██║     ██╔██╗ " +Colors.RESET + "\n" +
-					Colors.BLUE + "╚██████╔╝╚██████╔╝    ██╔╝ ██╗" +Colors.RESET + "\n" +
-					Colors.BLUE + " ╚═════╝  ╚═════╝     ╚═╝  ╚═╝" + Colors.RESET;
+			return  Colors.BLUE + " ██████╗  ██████╗         ██╗  ██╗" +Colors.RESET + "\n" +
+					Colors.BLUE + "██╔════╝ ██╔════╝ ██╗     ╚██╗██╔╝" +Colors.RESET + "\n" +
+					Colors.BLUE + "██║  ███╗██║  ███╗╚═╝      ╚███╔╝ " +Colors.RESET + "\n" +
+					Colors.BLUE + "██║   ██║██║   ██║██╗      ██╔██╗ " +Colors.RESET + "\n" +
+					Colors.BLUE + "╚██████╔╝╚██████╔╝╚═╝     ██╔╝ ██╗" +Colors.RESET + "\n" +
+					Colors.BLUE + " ╚═════╝  ╚═════╝         ╚═╝  ╚═╝" + Colors.RESET;
 		} else {
-			return  Colors.BLUE + " ██████╗  ██████╗      ██████╗ " + Colors.RESET + "\n" +
-					Colors.BLUE + "██╔════╝ ██╔════╝     ██╔═══██╗" + Colors.RESET + "\n" +
-					Colors.BLUE + "██║  ███╗██║  ███╗    ██║   ██║" + Colors.RESET + "\n" +
-					Colors.BLUE + "██║   ██║██║   ██║    ██║   ██║" + Colors.RESET + "\n" +
-					Colors.BLUE + "╚██████╔╝╚██████╔╝    ╚██████╔╝" + Colors.RESET + "\n" +
-					Colors.BLUE + " ╚═════╝  ╚═════╝      ╚═════╝ " + Colors.RESET;
+			return  Colors.BLUE + " ██████╗  ██████╗          ██████╗ " + Colors.RESET + "\n" +
+					Colors.BLUE + "██╔════╝ ██╔════╝ ██╗     ██╔═══██╗" + Colors.RESET + "\n" +
+					Colors.BLUE + "██║  ███╗██║  ███╗╚═╝     ██║   ██║" + Colors.RESET + "\n" +
+					Colors.BLUE + "██║   ██║██║   ██║██╗     ██║   ██║" + Colors.RESET + "\n" +
+					Colors.BLUE + "╚██████╔╝╚██████╔╝╚═╝     ╚██████╔╝" + Colors.RESET + "\n" +
+					Colors.BLUE + " ╚═════╝  ╚═════╝          ╚═════╝ " + Colors.RESET;
 		}
 	}
 
