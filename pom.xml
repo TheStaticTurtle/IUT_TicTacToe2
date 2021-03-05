@@ -50,6 +50,17 @@
                     <target>6</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <mainClass>fr.thestaticturtle.morpion2.Morpion2</mainClass>
+                    <environmentVariables>
+                        <ENABLE_ANSI>1</ENABLE_ANSI>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
