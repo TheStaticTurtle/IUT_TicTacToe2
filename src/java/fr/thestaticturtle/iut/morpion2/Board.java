@@ -71,19 +71,37 @@ public class Board {
 		else display_ascii();
 	}
 
-
-	void placeAt(Point p, String who) throws IndexOutOfBoundsException,NoSuchFieldException,InvalidParameterException {
-		if(!who.equals("O") && !who.equals("X")) throw new NoSuchFieldException("Invalid player piece (Must be X or O)");
-		if(p.x>0 && p.x<4 && p.y>0 && p.y<4) {
-			if(_board.get(p.y-1).get(p.x-1) != null) {
-				throw new InvalidParameterException("Position has already been played");
-			} else {
-				_board.get(p.y-1).set(p.x-1, who);
+	List<Point> empty_cells() {
+		List<Point> out = new ArrayList<Point>();
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 3; x++) {
+				if(_board.get(y).get(x) == null) out.add(new Point(x,y));
 			}
+		}
+		System.out.println(out);
+		return out;
+	}
+
+	boolean is_placement_valid(Point p) {
+		if(p.x>=0 && p.x<3 && p.y>=0 && p.y<3) {
+			for (Point ep : empty_cells()) {
+				if(ep.x==p.x && ep.y==p.y) return true;
+			}
+		}
+		return false;
+	}
+
+	boolean placeAt(Point p, String who) throws NoSuchFieldException {
+		if(!who.equals("O") && !who.equals("X")) throw new NoSuchFieldException("Invalid player piece (Must be X or O)");
+		if(is_placement_valid(new Point(p.x-1,p.y-1))) {
+			_board.get(p.y-1).set(p.x-1, who);
+			return true;
 		} else {
-			throw new IndexOutOfBoundsException("X and Y must be contained in 1-3");
+			return false;
 		}
 	}
+
+
 
 	String getWinner() {
 		for (int i = 0; i < 3; i++) {
@@ -94,7 +112,6 @@ public class Board {
 		if(_board.get(0).get(2) != null && _board.get(0).get(2).equals(_board.get(1).get(1)) && _board.get(2).get(0).equals(_board.get(2).get(2))) return _board.get(0).get(2);
 		return null;
 	}
-
 	String getWinBanner() {
 		if(getWinner().equals("X")) {
 			return  Colors.BLUE + " ██████╗  ██████╗     ██╗  ██╗" +Colors.RESET + "\n" +
@@ -112,6 +129,7 @@ public class Board {
 					Colors.BLUE + " ╚═════╝  ╚═════╝      ╚═════╝ " + Colors.RESET;
 		}
 	}
+
 	boolean isFinished() {
 		return getWinner() != null;
 	}

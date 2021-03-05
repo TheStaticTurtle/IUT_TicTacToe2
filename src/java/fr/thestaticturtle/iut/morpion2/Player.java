@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class Player {
-	Board party;
+	protected Board party;
 	String piece;
 
 	Player(Board p, String player_piece) throws NoSuchFieldException {
@@ -13,11 +13,12 @@ public class Player {
 		party = p;
 	}
 
-	void play() {
+	void play() throws NoSuchFieldException {
 		Scanner in = new Scanner(System.in);
 
 		System.out.print("[Player "+piece+"] Where do you want to play (row,col): ");
 		String s = in.nextLine();
+		if(s.equals("exit")||s.equals("quit")) System.exit(0);
 		if(!s.matches("\\d,\\d")) {
 			System.out.println("Invalid input");
 			play();
@@ -31,18 +32,9 @@ public class Player {
 		}
 		int y = Integer.parseInt(split[0]);
 		int x = Integer.parseInt(split[1]);
-		if(x>0 && x<4 && y>0 && y<4) {
-			try {
-				party.placeAt(new Point(x,y),piece);
-			} catch (Exception e) {
-				System.out.println("Invalid input ("+e.getMessage()+")");
-				play();
-				return;
-			}
-		} else {
-			System.out.println("Invalid input");
+		if(! party.placeAt(new Point(x,y),piece)) {
+			System.out.println("Requested position is invalid");
 			play();
-			return;
 		}
 	}
 }
