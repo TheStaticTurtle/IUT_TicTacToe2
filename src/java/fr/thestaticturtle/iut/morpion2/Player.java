@@ -13,7 +13,7 @@ public class Player {
 		party = p;
 	}
 
-	void play() throws NoSuchFieldException, Exception {
+	void play() throws NoSuchFieldException {
 		Scanner in = new Scanner(System.in);
 
 		System.out.print("[Player "+piece+"] Where do you want to play (row,col): ");

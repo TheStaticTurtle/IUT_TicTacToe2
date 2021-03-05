@@ -24,7 +24,7 @@ public class AIPlayer extends Player {
 		return 0;
 	}
 
-	MiniMaxGuess minimax_move(Board state, int depth, String player) throws Exception {
+	MiniMaxGuess minimax_move(Board state, int depth, String player) throws NoSuchFieldException {
 		MiniMaxGuess best_guess;
 		if(player.equals("O")) best_guess = new MiniMaxGuess(null, Integer.MIN_VALUE);
 		else best_guess = new MiniMaxGuess(null, Integer.MAX_VALUE);
@@ -51,11 +51,10 @@ public class AIPlayer extends Player {
 	}
 
 	@Override
-	void play() throws Exception {
+	void play() throws NoSuchFieldException {
 		int depth = this.party.empty_cells().size();
 
 		if(depth==0 || this.party.isFinished()) {
-			System.out.println("in here");
 			return;
 		} else if(depth==9) {
 			Random r = new Random();

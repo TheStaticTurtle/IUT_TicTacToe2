@@ -3,7 +3,6 @@ package fr.thestaticturtle.iut.morpion2;
 import fr.thestaticturtle.utils.Colors;
 
 import java.awt.*;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
