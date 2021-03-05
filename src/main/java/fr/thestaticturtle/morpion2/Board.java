@@ -1,4 +1,4 @@
-package fr.thestaticturtle.iut.morpion2;
+package fr.thestaticturtle.morpion2;
 
 import fr.thestaticturtle.utils.Colors;
 
@@ -20,9 +20,16 @@ public class Board {
 		}
 	}
 
-	public Board(List<List<Who>> initializer) {
+	public Board(List<List<String>> initializer, Who who_is_x, Who who_is_o) {
 		_board = new ArrayList<List<Who>>();
-		for(List<Who> sublist : initializer) _board.add(new ArrayList<Who>(sublist));
+		for(List<String> sublist : initializer) {
+			List<Who> x = new ArrayList<Who>();
+			for(String cell : sublist) {
+				if(cell == null) x.add(null);
+				else x.add( cell.equals("X") ? who_is_x : who_is_o );
+			}
+			_board.add(x);
+		}
 	}
 
 	public Board(Board b) {
@@ -70,7 +77,7 @@ public class Board {
 			System.out.print("\n");
 		}
 	}
-	void display() {
+	public void display() {
 		if(System.getenv("ENABLE_ANSI")!= null && System.getenv("ENABLE_ANSI").equals("1")) display_ansi();
 		else display_ascii();
 	}
@@ -112,7 +119,9 @@ public class Board {
 		return null;
 	}
 
-
+	public Who getAt(Point p) {
+		return _board.get(p.y).get(p.x);
+	}
 
 	Who getWinner() {
 		for (int i = 0; i < 3; i++) {
@@ -125,7 +134,7 @@ public class Board {
 		return null;
 	}
 
-	String getWinBanner() {
+	public String getWinBanner() {
 		if(getWinner().piece.equals("X")) {
 			return  Colors.BLUE + " ██████╗  ██████╗         ██╗  ██╗" +Colors.RESET + "\n" +
 					Colors.BLUE + "██╔════╝ ██╔════╝ ██╗     ╚██╗██╔╝" +Colors.RESET + "\n" +
@@ -150,7 +159,7 @@ public class Board {
 		}
 	}
 
-	boolean isFinished() {
+	public boolean isFinished() {
 		return getWinner() != null;
 	}
 }

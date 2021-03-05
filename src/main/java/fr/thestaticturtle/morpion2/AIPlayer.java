@@ -1,6 +1,5 @@
-package fr.thestaticturtle.iut.morpion2;
+package fr.thestaticturtle.morpion2;
 import java.awt.*;
-import java.util.List;
 import java.util.Random;
 
 class MiniMaxGuess {
@@ -13,7 +12,7 @@ class MiniMaxGuess {
 }
 
 public class AIPlayer extends Player {
-	AIPlayer(Board b)  {
+	public AIPlayer(Board b)  {
 		super(b, Who.AI);
 	}
 
@@ -54,7 +53,7 @@ public class AIPlayer extends Player {
 	}
 
 	@Override
-	void play() {
+	public void play() {
 		int depth = this.party.empty_cells().size();
 
 		if(depth==0 || this.party.isFinished()) {

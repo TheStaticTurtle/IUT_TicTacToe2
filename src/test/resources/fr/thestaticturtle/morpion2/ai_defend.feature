@@ -5,4 +5,4 @@ Feature:
     | O |   |   |
     |   |   |   |
     When player O plays
-    Then O should place at row 2, col 2
+    Then O should place at row 1, col 3

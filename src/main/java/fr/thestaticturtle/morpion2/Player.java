@@ -1,4 +1,4 @@
-package fr.thestaticturtle.iut.morpion2;
+package fr.thestaticturtle.morpion2;
 
 import java.awt.*;
 import java.util.Scanner;
@@ -12,7 +12,7 @@ public class Player {
 		party = p;
 	}
 
-	void play() {
+	public void play() {
 		Scanner in = new Scanner(System.in);
 
 		System.out.print("[Player "+piece+"] Where do you want to play (row,col): ");

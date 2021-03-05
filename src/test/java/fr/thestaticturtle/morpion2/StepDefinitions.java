@@ -1,33 +1,34 @@
-package fr.thestaticturtle.iut;
+package fr.thestaticturtle.morpion2;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.awt.*;
+
 import static org.junit.Assert.*;
 
 public class StepDefinitions {
+	Board tictactoe;
+	Player ai;
+
 	@Given("a board like this:")
 	public void a_board_like_this(io.cucumber.datatable.DataTable dataTable) {
-		// For automatic transformation, change DataTable to one of
-		// E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or Map<K, List<V>>.
-		// E,K,V must be a String, Integer, Float, Double, Byte, Short, Long, BigInteger or BigDecimal.
-
 		System.out.println("Test was given this board: "+dataTable.cells().toString());
-		//throw new io.cucumber.java.PendingException();
+		tictactoe = new Board(dataTable.cells(), Who.HumanA, Who.AI);
+		ai = new AIPlayer(tictactoe);
 	}
 
 	@When("player O plays")
 	public void player_o_plays() {
-		System.out.println("O Plays");
-		//throw new io.cucumber.java.PendingException();
+		tictactoe.display();
+		ai.play();
 	}
 
 	@Then("O should place at row {int}, col {int}")
 	public void o_should_place_at_row_col(Integer defX, Integer defY) {
-		int playedx = 2;
-		int playedy = 2;
-		assertEquals(defX.intValue(), playedx);
-		assertEquals(defY.intValue(), playedy);
+		tictactoe.display();
+		assertNotNull(tictactoe.getAt(new Point(defY-1,defX-1)));
+		assertTrue(tictactoe.getAt(new Point(defY-1,defX-1)).equals(Who.AI));
 	}
 }

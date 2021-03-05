@@ -1,4 +1,4 @@
-package fr.thestaticturtle.iut.morpion2;
+package fr.thestaticturtle.morpion2;
 
 public enum Who {
 	HumanA         ("X"),
