@@ -13,20 +13,23 @@ class MiniMaxGuess {
 }
 
 public class AIPlayer extends Player {
-	AIPlayer(Board b) throws NoSuchFieldException {
-		super(b, "O");
+	AIPlayer(Board b)  {
+		super(b, Who.AI);
+	}
+
+	AIPlayer(Board b, Who who) {
+		super(b, who);
 	}
 
 	int minimax_evaluate(Board b) {
-		if(b.getWinner() == null) return 0;
-		if(b.getWinner().equals("X")) return -1;
-		if(b.getWinner().equals("O")) return  1;
+		if( b.getWinner().equals(this.piece.getAdversary()) ) return -1;
+		if( b.getWinner().equals(this.piece) ) return  1;
 		return 0;
 	}
 
-	MiniMaxGuess minimax_move(Board state, int depth, String player) throws NoSuchFieldException {
+	MiniMaxGuess minimax_move(Board state, int depth, Who player) {
 		MiniMaxGuess best_guess;
-		if(player.equals("O")) best_guess = new MiniMaxGuess(null, Integer.MIN_VALUE);
+		if(player.equals(Who.AI)) best_guess = new MiniMaxGuess(null, Integer.MIN_VALUE);
 		else best_guess = new MiniMaxGuess(null, Integer.MAX_VALUE);
 
 		if (depth==0 || state.isFinished()){
@@ -35,12 +38,12 @@ public class AIPlayer extends Player {
 
 		for (Point cell : state.empty_cells()) {
 			state.placeAt(cell, player);
-			MiniMaxGuess guess = minimax_move(new Board(state), depth-1, player.equals("X") ? "O" : "X");
+			MiniMaxGuess guess = minimax_move(new Board(state), depth-1, player.getAdversary());
 			state.eraseAt(cell);
 
 			guess.point = cell;
 
-			if(player.equals("O")) {
+			if(player.equals(Who.AI)) {
 				if(guess.score>best_guess.score) best_guess = guess;
 			} else {
 				if(guess.score<best_guess.score) best_guess = guess;
@@ -51,7 +54,7 @@ public class AIPlayer extends Player {
 	}
 
 	@Override
-	void play() throws NoSuchFieldException {
+	void play() {
 		int depth = this.party.empty_cells().size();
 
 		if(depth==0 || this.party.isFinished()) {
@@ -62,7 +65,7 @@ public class AIPlayer extends Player {
 			this.party.placeAt(move,piece);
 			System.out.println("[Player "+piece+"] played at (row,col): "+(move.y+1)+","+(move.x+1)+"");
 		} else {
-			MiniMaxGuess guess = minimax_move(new Board(this.party), depth,"O");
+			MiniMaxGuess guess = minimax_move(new Board(this.party), depth, Who.AI);
 			this.party.placeAt(guess.point,piece);
 			System.out.println("[Player "+piece+"] played at (row,col): "+(guess.point.y+1)+","+(guess.point.x+1)+"");
 		}

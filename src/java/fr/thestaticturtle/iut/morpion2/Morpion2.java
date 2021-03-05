@@ -3,9 +3,11 @@ package fr.thestaticturtle.iut.morpion2;
 public class Morpion2 {
 	public static void main(String[] args) throws Exception {
 		Board board = new Board();
-		Player playerX = new Player(board,"X");
-		//Player playerO = new Player(board,"O");
-		Player playerO = new AIPlayer(board); //AIPlayer uses O
+		Player playerX = new Player(board,Who.HumanA);
+		Player playerO = new Player(board,Who.HumanB);
+
+		//playerX = new AIPlayer(board, Who.AI_BIS);
+		playerO = new AIPlayer(board);
 
 		board.display();
 		while(!board.isFinished()) {

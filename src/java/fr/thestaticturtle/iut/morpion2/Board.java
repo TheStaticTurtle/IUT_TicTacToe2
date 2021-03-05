@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-	List<List<String>> _board;
+	List<List<Who>> _board;
 
 	public Board() {
-		_board = new ArrayList<List<String>>();
+		_board = new ArrayList<List<Who>>();
 		for (int i = 0; i < 3; i++) {
-			ArrayList<String> x = new ArrayList<String>();
+			ArrayList<Who> x = new ArrayList<Who>();
 			x.add(null);
 			x.add(null);
 			x.add(null);
@@ -20,14 +20,14 @@ public class Board {
 		}
 	}
 
-	public Board(List<List<String>> initializer) {
-		_board = new ArrayList<List<String>>();
-		for(List<String> sublist : initializer) _board.add(new ArrayList<String>(sublist));
+	public Board(List<List<Who>> initializer) {
+		_board = new ArrayList<List<Who>>();
+		for(List<Who> sublist : initializer) _board.add(new ArrayList<Who>(sublist));
 	}
 
 	public Board(Board b) {
-		_board = new ArrayList<List<String>>();
-		for(List<String> sublist : b._board) _board.add(new ArrayList<String>(sublist));
+		_board = new ArrayList<List<Who>>();
+		for(List<Who> sublist : b._board) _board.add(new ArrayList<Who>(sublist));
 	}
 
 	private void display_ansi() {
@@ -42,9 +42,9 @@ public class Board {
 				else if (!((x - 1) % 8 > 2 && (y - 1) % 4 > 0)) System.out.print(Colors.WHITE_BACKGROUND + " ");
 				else if ((x - 1) % 8 > 2 && (y - 1) % 4 > 0) {
 					System.out.print(Colors.BLUE_BACKGROUND);
-					String c = _board.get(((y - 1) / 4)).get( ((x - 1) / 8));
+					Who c = _board.get(((y - 1) / 4)).get( ((x - 1) / 8));
 					if ((x - 1) % 8 == 5 && (y - 1) % 4 == 2)
-						System.out.print(Colors.BLACK + "" + Colors.BLUE_BACKGROUND + ((c == null) ? " " : c));
+						System.out.print(Colors.BLACK + "" + Colors.BLUE_BACKGROUND + ((c == null) ? " " : c.piece));
 					else System.out.print(" ");
 				} else System.out.print(Colors.RESET + " ");
 			}
@@ -61,9 +61,9 @@ public class Board {
 				else if ((y == 1 || y == 13 || x == 3 || x == 25)) System.out.print("#");
 				else if (!((x - 1) % 8 > 2 && (y - 1) % 4 > 0)) System.out.print("#");
 				else if ((x - 1) % 8 > 2 && (y - 1) % 4 > 0) {
-					String c = _board.get(((y - 1) / 4)).get( ((x - 1) / 8));
+					Who c = _board.get(((y - 1) / 4)).get( ((x - 1) / 8));
 					if ((x - 1) % 8 == 5 && (y - 1) % 4 == 2)
-						System.out.print((c == null) ? " " : c);
+						System.out.print((c == null) ? " " : c.piece);
 					else System.out.print(" ");
 				} else System.out.print(" ");
 			}
@@ -94,8 +94,7 @@ public class Board {
 		return false;
 	}
 
-	boolean placeAt(Point p, String who) throws NoSuchFieldException {
-		if(!who.equals("O") && !who.equals("X")) throw new NoSuchFieldException("Invalid player piece (Must be X or O)");
+	boolean placeAt(Point p, Who who)  {
 		if(is_placement_valid(p)) {
 			_board.get(p.y).set(p.x, who);
 			return true;
@@ -104,9 +103,9 @@ public class Board {
 		}
 	}
 
-	String eraseAt(Point p) {
+	Who eraseAt(Point p) {
 		if( _board.get(p.y).get(p.x) != null ) {
-			String was = _board.get(p.y).get(p.x);
+			Who was = _board.get(p.y).get(p.x);
 			_board.get(p.y).set(p.x, null);
 			return was;
 		}
@@ -115,26 +114,26 @@ public class Board {
 
 
 
-	String getWinner() {
+	Who getWinner() {
 		for (int i = 0; i < 3; i++) {
 			if(_board.get(0).get(i) != null && _board.get(0).get(i).equals(_board.get(1).get(i)) && _board.get(0).get(i).equals(_board.get(2).get(i))) return _board.get(0).get(i);
 			if(_board.get(i).get(0) != null && _board.get(i).get(0).equals(_board.get(i).get(1)) && _board.get(i).get(0).equals(_board.get(i).get(2))) return _board.get(i).get(0);
 		}
 		if(_board.get(0).get(0) != null && _board.get(0).get(0).equals(_board.get(1).get(1)) && _board.get(0).get(0).equals(_board.get(2).get(2))) return _board.get(0).get(0);
 		if(_board.get(0).get(2) != null && _board.get(0).get(2).equals(_board.get(1).get(1)) && _board.get(0).get(2).equals(_board.get(2).get(2))) return _board.get(0).get(2);
-		if(empty_cells().size()==0) return "draw";
+		if(empty_cells().size()==0) return Who.INTERNAL_DRAW;
 		return null;
 	}
 
 	String getWinBanner() {
-		if(getWinner().equals("X")) {
+		if(getWinner().piece.equals("X")) {
 			return  Colors.BLUE + " ██████╗  ██████╗         ██╗  ██╗" +Colors.RESET + "\n" +
 					Colors.BLUE + "██╔════╝ ██╔════╝ ██╗     ╚██╗██╔╝" +Colors.RESET + "\n" +
 					Colors.BLUE + "██║  ███╗██║  ███╗╚═╝      ╚███╔╝ " +Colors.RESET + "\n" +
 					Colors.BLUE + "██║   ██║██║   ██║██╗      ██╔██╗ " +Colors.RESET + "\n" +
 					Colors.BLUE + "╚██████╔╝╚██████╔╝╚═╝     ██╔╝ ██╗" +Colors.RESET + "\n" +
 					Colors.BLUE + " ╚═════╝  ╚═════╝         ╚═╝  ╚═╝" + Colors.RESET;
-		} else if (getWinner().equals("O")) {
+		} else if (getWinner().piece.equals("O")) {
 			return  Colors.BLUE + " ██████╗  ██████╗          ██████╗ " + Colors.RESET + "\n" +
 					Colors.BLUE + "██╔════╝ ██╔════╝ ██╗     ██╔═══██╗" + Colors.RESET + "\n" +
 					Colors.BLUE + "██║  ███╗██║  ███╗╚═╝     ██║   ██║" + Colors.RESET + "\n" +

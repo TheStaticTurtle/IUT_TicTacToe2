@@ -5,15 +5,14 @@ import java.util.Scanner;
 
 public class Player {
 	protected Board party;
-	String piece;
+	Who piece;
 
-	Player(Board p, String player_piece) throws NoSuchFieldException {
-		if(!player_piece.equals("O") && !player_piece.equals("X")) throw new NoSuchFieldException("Invalid player piece");
+	Player(Board p, Who player_piece) {
 		piece = player_piece;
 		party = p;
 	}
 
-	void play() throws NoSuchFieldException {
+	void play() {
 		Scanner in = new Scanner(System.in);
 
 		System.out.print("[Player "+piece+"] Where do you want to play (row,col): ");
