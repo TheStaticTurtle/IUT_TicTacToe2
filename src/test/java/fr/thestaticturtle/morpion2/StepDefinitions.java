@@ -21,13 +21,13 @@ public class StepDefinitions {
 
 	@When("player O plays")
 	public void player_o_plays() {
-		tictactoe.display();
+		//tictactoe.display();
 		ai.play();
 	}
 
 	@Then("O should place at row {int}, col {int}")
 	public void o_should_place_at_row_col(Integer defX, Integer defY) {
-		tictactoe.display();
+		//tictactoe.display();
 		assertNotNull(tictactoe.getAt(new Point(defY-1,defX-1)));
 		assertTrue(tictactoe.getAt(new Point(defY-1,defX-1)).equals(Who.AI));
 	}

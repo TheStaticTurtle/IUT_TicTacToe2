@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.awt.*;
 import java.io.*;
 
-public class PlayerUnitTests {
+public class PlayerUnitTest {
 
 	@Test
 	public void testPlayerPlayNormal() {

@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoardUnitTests {
+public class BoardUnitTest {
 
 	@Test
 	public void testInitEmpty() {
