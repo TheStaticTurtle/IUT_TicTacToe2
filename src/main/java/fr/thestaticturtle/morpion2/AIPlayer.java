@@ -20,9 +20,9 @@ public class AIPlayer extends Player {
 		super(b, who);
 	}
 
-	int minimax_evaluate(Board b) {
-		if( b.getWinner().equals(this.piece.getAdversary()) ) return -1;
-		if( b.getWinner().equals(this.piece) ) return  1;
+	int minimax_evaluate(Board b, int depth) {
+		if( b.getWinner().equals(this.piece.getAdversary()) ) return -10;
+		if( b.getWinner().equals(this.piece) ) return  5*(6-depth);
 		return 0;
 	}
 
@@ -32,7 +32,7 @@ public class AIPlayer extends Player {
 		else best_guess = new MiniMaxGuess(null, Integer.MAX_VALUE);
 
 		if (depth==0 || state.isFinished()){
-			return new MiniMaxGuess(null, minimax_evaluate(state));
+			return new MiniMaxGuess(null, minimax_evaluate(state, depth));
 		}
 
 		for (Point cell : state.empty_cells()) {
